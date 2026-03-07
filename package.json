@@ -1,6 +1,11 @@
 {
     "version": "1.0.4",
     "name": "@benjamindehli/midi-notes-to-chords",
+    "description": "Detect chord names from MIDI note input",
+    "keywords": [
+        "javascript",
+        "midi"
+    ],
     "type": "module",
     "main": "./dist/index.cjs",
     "module": "./dist/index.js",
@@ -18,6 +23,19 @@
         "build": "tsup",
         "test": "jest"
     },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/benjamindehli/midi-notes-to-chords.git"
+    },
+    "author": "Benjamin Dehli",
+    "bugs": {
+        "url": "https://github.com/benjamindehli/midi-notes-to-chords/issues"
+    },
+    "funding": [
+        "https://ko-fi.com/benjamindehli",
+        "https://store.dehlimusikk.no/coffee"
+    ],
+    "homepage": "https://github.com/benjamindehli/midi-notes-to-chords#readme",
     "devDependencies": {
         "@babel/core": "^7.29.0",
         "@babel/preset-env": "^7.29.0",
