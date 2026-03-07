@@ -6,6 +6,8 @@
         "test": "jest"
     },
     "devDependencies": {
+        "@eslint/js": "^10.0.1",
+        "eslint": "^10.0.3",
         "jest": "^30.2.0",
         "webpack": "^5.105.4",
         "webpack-cli": "^6.0.1"
