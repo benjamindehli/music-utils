@@ -1,3 +1,3 @@
-import { TextEncoder, TextDecoder } from "node:util";
+const { TextEncoder, TextDecoder } = require("node:util");
 
 Object.assign(globalThis, { TextDecoder, TextEncoder });
