@@ -1,0 +1,65 @@
+name: Publish Node.js Package
+
+on:
+    release:
+        types: [created]
+
+permissions:
+    contents: read
+    packages: write
+    id-token: write
+
+jobs:
+    publish-npm-package:
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v4
+
+            - name: Setup Node.js
+              uses: actions/setup-node@v4
+              with:
+                  node-version: "22"
+                  registry-url: https://registry.npmjs.org/
+
+            # Enable Corepack and activate the Yarn version from package.json
+            - name: Enable Corepack & activate Yarn 4
+              run: |
+                  corepack enable
+                  corepack prepare yarn@4.10.3 --activate
+                  yarn --version
+
+            # Optional: cache Yarn Berry's project cache (speeds up installs)
+            - name: Cache Yarn v4 artifacts
+              uses: actions/cache@v3
+              with:
+                  path: |
+                      .yarn/cache
+                      .yarn/install-state.gz
+                  key: ${{ runner.os }}-yarn4-${{ hashFiles('**/yarn.lock') }}
+                  restore-keys: |
+                      ${{ runner.os }}-yarn4-
+
+            - name: Install dependencies
+              run: yarn install --immutable
+
+            - name: Run tests
+              run: yarn test
+
+            - name: Build project
+              if: ${{ success() }}
+              run: yarn build
+
+            - name: Configure npm auth
+              run: |
+                  echo "//registry.npmjs.org/:_authToken=${NODE_AUTH_TOKEN}" > ~/.npmrc
+                  npm whoami
+              env:
+                  NODE_AUTH_TOKEN: ${{ secrets.PUBLISH_NPM_TOKEN }}
+
+            - name: Publish to npm
+              if: ${{ success() }}
+              run: npm publish --provenance
+              env:
+                  NODE_AUTH_TOKEN: ${{ secrets.PUBLISH_NPM_TOKEN }}
