@@ -1,15 +1,28 @@
 {
     "name": "midi-notes-to-chords",
-    "packageManager": "yarn@4.5.0",
+    "type": "module",
+    "main": "./dist/index.cjs",
+    "module": "./dist/index.js",
+    "files": [
+        "dist"
+    ],
+    "exports": {
+        ".": {
+            "import": "./dist/index.js",
+            "require": "./dist/index.cjs"
+        }
+    },
+    "sideEffects": false,
     "scripts": {
-        "build": "webpack --mode production",
+        "build": "tsup",
         "test": "jest"
     },
     "devDependencies": {
         "@eslint/js": "^10.0.1",
         "eslint": "^10.0.3",
         "jest": "^30.2.0",
-        "webpack": "^5.105.4",
-        "webpack-cli": "^6.0.1"
-    }
+        "tsup": "^8.5.1",
+        "typescript": "^5.9.3"
+    },
+    "packageManager": "yarn@4.5.0"
 }
