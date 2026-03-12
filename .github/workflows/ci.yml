@@ -19,7 +19,7 @@ jobs:
       - name: Use Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: "18"
+          node-version: "24"
 
       # Completely remove Yarn 1 so Corepack takes over
       - name: Remove preinstalled Yarn 1
