@@ -14,9 +14,9 @@ jobs:
         runs-on: ubuntu-latest
 
         steps:
-            - uses: actions/checkout@v4
+            - uses: actions/checkout@v6
 
-            - uses: actions/setup-node@v4
+            - uses: actions/setup-node@v6
               with:
                   node-version: "24"
                   registry-url: https://npm.pkg.github.com/
@@ -28,17 +28,6 @@ jobs:
                   corepack enable
                   corepack prepare yarn@4.10.3 --activate
                   yarn --version
-
-            # Optional: cache Yarn Berry's project cache (speeds up installs)
-            - name: Cache Yarn v4 artifacts
-              uses: actions/cache@v3
-              with:
-                  path: |
-                      .yarn/cache
-                      .yarn/install-state.gz
-                  key: ${{ runner.os }}-yarn4-${{ hashFiles('**/yarn.lock') }}
-                  restore-keys: |
-                      ${{ runner.os }}-yarn4-
 
             - run: yarn install --immutable
             - run: yarn test
