@@ -1,4 +1,4 @@
-// Helpers
+// Classes
 import { normalizeHalfSteps } from "../helpers/noteHelpers.js";
 
 // Data

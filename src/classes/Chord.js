@@ -1,4 +1,4 @@
-// Helpers
+// Classes
 import NoteSelection from "./NoteSelection.js";
 
 /**
