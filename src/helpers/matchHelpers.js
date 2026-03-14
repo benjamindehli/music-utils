@@ -61,7 +61,7 @@ function getMatchedChords(selectedNoteNumbers, matchedChords) {
             if (isChordMatch(normalizedRelativeNotes, chordHalfSteps)) {
                 matchedChords.push({
                     root: rootNote.name,
-                    chord: chord.name
+                    chord
                 });
             }
         }

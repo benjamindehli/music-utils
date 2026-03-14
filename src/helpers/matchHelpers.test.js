@@ -10,14 +10,26 @@ describe("getChordsFromSelectedNotes", () => {
         const midiNotes = [60, 64, 67];
         const result = getChordsFromSelectedNotes(midiNotes);
         // Should include C major as the first match
-        expect(result[0]).toMatchObject({ root: "C", chord: "major" });
+        expect(result[0]).toMatchObject({
+            root: "C",
+            chord: {
+                name: "major",
+                halfSteps: [0, 4, 7]
+            }
+        });
     });
 
     it("identifies an E minor chord", () => {
         // E minor: E (64), G (67), B (71)
         const midiNotes = [64, 67, 71];
         const result = getChordsFromSelectedNotes(midiNotes);
-        expect(result[0]).toMatchObject({ root: "E", chord: "minor" });
+        expect(result[0]).toMatchObject({
+            root: "E",
+            chord: {
+                name: "minor",
+                halfSteps: [0, 3, 7]
+            }
+        });
     });
 
     it("puts lowest note chord first if present", () => {
@@ -40,6 +52,12 @@ describe("getChordsFromSelectedNotes", () => {
         // C major with repeated C: C (60), E (64), G (67), C (72)
         const midiNotes = [60, 64, 67, 72];
         const result = getChordsFromSelectedNotes(midiNotes);
-        expect(result[0]).toMatchObject({ root: "C", chord: "major" });
+        expect(result[0]).toMatchObject({
+            root: "C",
+            chord: {
+                name: "major",
+                halfSteps: [0, 4, 7]
+            }
+        });
     });
 });
