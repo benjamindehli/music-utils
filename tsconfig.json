@@ -11,6 +11,6 @@
         "outDir": "dist",
         "types": ["node", "jest"]
     },
-    "include": ["src/**/*"],
+    "include": ["src/**/*", "setup-jest.ts"],
     "exclude": ["node_modules", "dist"]
 }
