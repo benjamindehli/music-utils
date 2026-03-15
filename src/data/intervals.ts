@@ -1,7 +1,7 @@
 // Classes
 import Interval from "../classes/Interval";
 
-const intervals = [
+const intervals: Interval[] = [
     new Interval({ name: "P1", number: 0 }),
     new Interval({ name: "m2", number: 1 }),
     new Interval({ name: "M2", number: 2 }),

@@ -1,7 +1,7 @@
 // Classes
-import Chord from "../classes/Chord.js";
+import Chord from "../classes/Chord";
 
-const chords = [
+const chords: Chord[] = [
     new Chord({ halfSteps: [0], name: "" }),
     new Chord({ halfSteps: [0, 2, 3], name: "m(add2)(no5)" }),
     new Chord({ halfSteps: [0, 2, 3, 7], name: "m(add2)" }),

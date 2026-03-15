@@ -1,7 +1,7 @@
 // Classes
-import Note from "../classes/Note.js";
+import Note from "../classes/Note";
 
-const notes = [
+const notes: Note[] = [
     new Note({ number: 0, name: "C" }),
     new Note({ number: 1, name: "C#" }),
     new Note({ number: 2, name: "D" }),

@@ -1,7 +1,7 @@
 // Classes
-import Scale from "../classes/Scale.js";
+import Scale from "../classes/Scale";
 
-const scales = [
+const scales: Scale[] = [
     new Scale({ halfSteps: [0, 1, 3, 4, 6, 7], name: "istrian scale" }),
     new Scale({ halfSteps: [0, 1, 3, 4, 6, 8, 11], name: "altered scale" }),
     new Scale({ halfSteps: [0, 1, 3, 4, 7, 8, 10], name: "phrygian b4 scale" }),
