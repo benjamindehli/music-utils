@@ -1,3 +1,4 @@
+/// <reference types="jest" />
 import type { Config } from "jest";
 
 const config: Config = {
