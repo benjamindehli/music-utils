@@ -4,7 +4,7 @@ import js from "@eslint/js";
 
 export default defineConfig([
     {
-        files: ["**/*.{js,mjs,cjs}"],
+        files: ["**/*.{js,mjs,cjs,ts,tsx}"],
         plugins: { js },
         extends: ["js/recommended"],
         languageOptions: { globals: { ...globals.browser, ...globals.node } },
@@ -19,7 +19,7 @@ export default defineConfig([
         }
     },
     {
-        files: ["**/*.test.js", "**/*.spec.js"], // 👈 Only apply to test files
+        files: ["**/*.test.{js,ts}", "**/*.spec.{js,ts}"], // 👈 Only apply to test files
         languageOptions: {
             globals: {
                 ...globals.jest // 👈 Add Jest globals like `describe`, `it`, `expect`
