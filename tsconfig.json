@@ -8,8 +8,7 @@
         "skipLibCheck": true,
         "moduleResolution": "node",
         "resolveJsonModule": true,
-        "outDir": "dist",
-        "types": ["node", "jest"]
+        "outDir": "dist"
     },
     "include": ["src/**/*", "src/**/*.test.ts", "src/**/*.spec.ts", "setup-jest.ts"],
     "exclude": ["node_modules", "dist"]
