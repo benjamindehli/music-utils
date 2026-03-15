@@ -2,9 +2,9 @@
 import { getRelativeNoteNumber, normalizeHalfStep, normalizeHalfSteps } from "./noteHelpers";
 
 // Data
+import Note from "../classes/Note";
 import chords from "../data/chords";
 import notes from "../data/notes";
-import Note from "../classes/Note";
 
 export interface MatchedChord {
     root: string;
