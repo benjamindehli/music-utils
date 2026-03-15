@@ -1,4 +1,3 @@
-/// <reference types="jest" />
 import { getRelativeNoteNumber, normalizeHalfStep, normalizeHalfSteps } from "./noteHelpers";
 
 describe("noteHelpers", () => {

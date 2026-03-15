@@ -1,4 +1,3 @@
-/// <reference types="jest" />
 import { getChordsFromSelectedNotes } from "./matchHelpers";
 
 describe("getChordsFromSelectedNotes", () => {
