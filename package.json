@@ -16,8 +16,65 @@
         ".": {
             "import": "./dist/index.js",
             "require": "./dist/index.cjs"
+        },
+        "./classes/Chord": {
+            "import": "./dist/classes/Chord.js",
+            "require": "./dist/classes/Chord.cjs"
+        },
+        "./classes/Interval": {
+            "import": "./dist/classes/Interval.js",
+            "require": "./dist/classes/Interval.cjs"
+        },
+        "./classes/Midi": {
+            "import": "./dist/classes/Midi.js",
+            "require": "./dist/classes/Midi.cjs"
+        },
+        "./classes/Note": {
+            "import": "./dist/classes/Note.js",
+            "require": "./dist/classes/Note.cjs"
+        },
+        "./classes/NoteSelection": {
+            "import": "./dist/classes/NoteSelection.js",
+            "require": "./dist/classes/NoteSelection.cjs"
+        },
+        "./classes/Scale": {
+            "import": "./dist/classes/Scale.js",
+            "require": "./dist/classes/Scale.cjs"
+        },
+        "./classes/SelectionType": {
+            "import": "./dist/classes/SelectionType.js",
+            "require": "./dist/classes/SelectionType.cjs"
+        },
+        "./data/chords": {
+            "import": "./dist/data/chords.js",
+            "require": "./dist/data/chords.cjs"
+        },
+        "./data/intervals": {
+            "import": "./dist/data/intervals.js",
+            "require": "./dist/data/intervals.cjs"
+        },
+        "./data/notes": {
+            "import": "./dist/data/notes.js",
+            "require": "./dist/data/notes.cjs"
+        },
+        "./data/scales": {
+            "import": "./dist/data/scales.js",
+            "require": "./dist/data/scales.cjs"
+        },
+        "./data/selectionTypes": {
+            "import": "./dist/data/selectionTypes.js",
+            "require": "./dist/data/selectionTypes.cjs"
+        },
+        "./helpers/matchHelpers": {
+            "import": "./dist/helpers/matchHelpers.js",
+            "require": "./dist/helpers/matchHelpers.cjs"
+        },
+        "./helpers/noteHelpers": {
+            "import": "./dist/helpers/noteHelpers.js",
+            "require": "./dist/helpers/noteHelpers.cjs"
         }
     },
+        "types": "./dist/index.d.ts",
     "sideEffects": false,
     "scripts": {
         "build": "tsup",
