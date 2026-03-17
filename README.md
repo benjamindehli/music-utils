@@ -1,26 +1,51 @@
-# music-utils
+# @benjamindehli/music-utils
 
-A utility for identifying chords from selected MIDI note numbers.
+A TypeScript/JavaScript library for music theory utilities and chord detection from MIDI note input.
 
 ## Features
 
-- Detects chord names from MIDI note input
-- Supports a wide range of chord types and inversions
-- Returns chord matches with root note prioritization
+- Detect chord names from MIDI note input
+- Music theory classes: Chord, Interval, Note, Scale, Midi, NoteSelection
+- Data modules for chords, intervals, notes, scales, selection types
+- Helper functions for matching and note normalization
+- Deep import support for optimized usage and tree-shaking
+- TypeScript type definitions included
 
 ## Installation
 
 ```bash
+yarn add @benjamindehli/music-utils
+# or
 npm install @benjamindehli/music-utils
 ```
 
 ## Usage
 
-```js
-import { getChordsFromSelectedNotes } from "@benjamindehli/music-utils";
+### Top-level import
 
-const midiNotes = [60, 64, 67]; // C, E, G
-const chords = getChordsFromSelectedNotes(midiNotes);
-console.log(chords);
-// Output: [{ root: "C", chord: "major" }, { root: "E", chord: "m(#5)}]
+```js
+import { Midi, getChordsFromSelectedNotes } from '@benjamindehli/music-utils';
+
+const midi = new Midi();
+midi.init(handleMIDIMessage);
+
+const detectedChord = getChordsFromSelectedNotes([60, 64, 67]);
 ```
+
+### Deep imports
+
+```js
+import Chord from '@benjamindehli/music-utils/classes/Chord';
+import chords from '@benjamindehli/music-utils/data/chords';
+import { getChordsFromSelectedNotes } from '@benjamindehli/music-utils/helpers/matchHelpers';
+```
+
+## API Overview
+
+- **Classes**: Chord, Interval, Midi, Note, NoteSelection, Scale
+- **Data**: chords, intervals, notes, scales, selectionTypes
+- **Helpers**: getChordsFromSelectedNotes, getRelativeNoteNumber, normalizeHalfStep, normalizeHalfSteps
+
+## TypeScript Support
+
+All exports include type definitions for seamless TypeScript integration.
