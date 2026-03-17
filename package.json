@@ -74,7 +74,7 @@
             "require": "./dist/helpers/noteHelpers.cjs"
         }
     },
-        "types": "./dist/index.d.ts",
+    "types": "./dist/index.d.ts",
     "sideEffects": false,
     "scripts": {
         "build": "tsup",
@@ -96,18 +96,18 @@
     "homepage": "https://github.com/benjamindehli/music-utils#readme",
     "devDependencies": {
         "@babel/core": "^7.29.0",
-        "@babel/preset-env": "^7.29.0",
+        "@babel/preset-env": "^7.29.2",
         "@babel/preset-typescript": "^7.28.5",
         "@eslint/js": "^10.0.1",
         "@types/jest": "^30.0.0",
         "@types/node": "^25.5.0",
-        "@typescript-eslint/parser": "^8.57.0",
+        "@typescript-eslint/parser": "^8.57.1",
         "babel-jest": "^30.3.0",
         "eslint": "^10.0.3",
         "globals": "^17.4.0",
         "jest": "^30.3.0",
         "jest-util": "^30.3.0",
-        "knip": "^5.86.0",
+        "knip": "^5.87.0",
         "ts-node": "^10.9.2",
         "tsup": "^8.5.1",
         "typescript": "^5.9.3"
