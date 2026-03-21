@@ -17,9 +17,9 @@
             "import": "./dist/index.js",
             "require": "./dist/index.cjs"
         },
-        "./classes/Chord": {
-            "import": "./dist/classes/Chord.js",
-            "require": "./dist/classes/Chord.cjs"
+        "./classes/ChordTypes": {
+            "import": "./dist/classes/ChordTypes.js",
+            "require": "./dist/classes/ChordTypes.cjs"
         },
         "./classes/Interval": {
             "import": "./dist/classes/Interval.js",
@@ -37,17 +37,17 @@
             "import": "./dist/classes/NoteSelection.js",
             "require": "./dist/classes/NoteSelection.cjs"
         },
-        "./classes/Scale": {
-            "import": "./dist/classes/Scale.js",
-            "require": "./dist/classes/Scale.cjs"
+        "./classes/ScaleTypes": {
+            "import": "./dist/classes/ScaleTypes.js",
+            "require": "./dist/classes/ScaleTypes.cjs"
         },
         "./classes/SelectionType": {
             "import": "./dist/classes/SelectionType.js",
             "require": "./dist/classes/SelectionType.cjs"
         },
-        "./data/chords": {
-            "import": "./dist/data/chords.js",
-            "require": "./dist/data/chords.cjs"
+        "./data/chordTypes": {
+            "import": "./dist/data/chordTypes.js",
+            "require": "./dist/data/chordTypes.cjs"
         },
         "./data/intervals": {
             "import": "./dist/data/intervals.js",
@@ -57,9 +57,9 @@
             "import": "./dist/data/notes.js",
             "require": "./dist/data/notes.cjs"
         },
-        "./data/scales": {
-            "import": "./dist/data/scales.js",
-            "require": "./dist/data/scales.cjs"
+        "./data/scaleTypes": {
+            "import": "./dist/data/scaleTypes.js",
+            "require": "./dist/data/scaleTypes.cjs"
         },
         "./data/selectionTypes": {
             "import": "./dist/data/selectionTypes.js",
