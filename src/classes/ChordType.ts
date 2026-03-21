@@ -1,9 +1,9 @@
 import NoteSelection, { NoteSelectionProps, SelectionType } from "./NoteSelection";
 
 /**
- * Class representing a musical chord, which is a type of note selection.
+ * Class representing a musical chord type, which is a type of note selection.
  */
-export default class Chord extends NoteSelection {
+export default class ChordType extends NoteSelection {
     type: SelectionType | undefined;
 
     constructor(props: NoteSelectionProps) {

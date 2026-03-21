@@ -1,7 +1,7 @@
 // Classes
 import ChordType from "../classes/ChordType";
 
-const chords: ChordType[] = [
+const chordTypes: ChordType[] = [
     new ChordType({ halfSteps: [0], name: "" }),
     new ChordType({ halfSteps: [0, 2, 3], name: "m(add2)(no5)" }),
     new ChordType({ halfSteps: [0, 2, 3, 7], name: "m(add2)" }),
@@ -107,4 +107,4 @@ const chords: ChordType[] = [
     new ChordType({ halfSteps: [0, 11], name: "maj7(no3)" })
 ];
 
-export default chords;
+export default chordTypes;
