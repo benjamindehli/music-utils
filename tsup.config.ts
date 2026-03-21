@@ -3,12 +3,14 @@ import { defineConfig } from "tsup";
 export default defineConfig({
     entry: [
         "src/index.ts",
-        "src/classes/ChordTypes.ts",
+        "src/classes/Chord.ts",
+        "src/classes/ChordType.ts",
         "src/classes/Interval.ts",
         "src/classes/Midi.ts",
         "src/classes/Note.ts",
         "src/classes/NoteSelection.ts",
-        "src/classes/ScaleTypes.ts",
+        "src/classes/Scale.ts",
+        "src/classes/ScaleType.ts",
         "src/classes/SelectionType.ts",
         "src/data/chordTypes.ts",
         "src/data/intervals.ts",
