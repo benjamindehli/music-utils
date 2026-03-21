@@ -1,15 +1,13 @@
+// Classes
+import Chord from "../classes/Chord";
+import Note from "../classes/Note";
+
 // Helpers
 import { getRelativeNoteNumber, normalizeHalfStep, normalizeHalfSteps } from "./noteHelpers";
 
 // Data
-import Note from "../classes/Note";
-import chords from "../data/chords";
+import chordTypes from "../data/chordTypes";
 import notes from "../data/notes";
-
-export interface MatchedChord {
-    root: string;
-    chord: any;
-}
 
 /**
  * Gets the chord that matches the lowest note.
@@ -18,8 +16,8 @@ export interface MatchedChord {
  * @param lowestNote - The lowest note
  * @returns The chord that matches the lowest note, or undefined if none match
  */
-function getLowestNoteMatchedChord(matchedChords: MatchedChord[], lowestNote: Note | undefined): MatchedChord | undefined {
-    return matchedChords.find((chord) => chord.root === lowestNote?.name);
+function getLowestNoteMatchedChord(matchedChords: Chord[], lowestNote: Note | undefined): Chord | undefined {
+    return matchedChords.find((chord) => chord.rootNote?.name === lowestNote?.name);
 }
 
 /**
@@ -29,7 +27,7 @@ function getLowestNoteMatchedChord(matchedChords: MatchedChord[], lowestNote: No
  * @param lowestNoteChord - The chord with the lowest note as the root
  * @returns An array of matched chords with the lowest note chord first
  */
-function addMatchWithLowestNoteAsRootFirst(matchedChords: MatchedChord[], lowestNoteChord: MatchedChord): MatchedChord[] {
+function addMatchWithLowestNoteAsRootFirst(matchedChords: Chord[], lowestNoteChord: Chord): Chord[] {
     matchedChords = matchedChords.filter((chord) => chord !== lowestNoteChord);
     matchedChords.unshift(lowestNoteChord);
     return matchedChords;
@@ -61,17 +59,17 @@ function isChordMatch(normalizedRelativeNotes: number[], chordHalfSteps: number[
  * @param matchedChords - An array of already matched chords
  * @returns An array of matched chords
  */
-function getMatchedChords(selectedNoteNumbers: number[], matchedChords: MatchedChord[]): MatchedChord[] {
+function getMatchedChords(selectedNoteNumbers: number[], matchedChords: Chord[]): Chord[] {
     for (const rootNote of notes) {
         const relativeSelectedNotes = selectedNoteNumbers.map((noteNumber) => getRelativeNoteNumber(noteNumber, rootNote.number));
         relativeSelectedNotes.sort((a, b) => a - b);
         const normalizedRelativeNotes = normalizeHalfSteps(relativeSelectedNotes);
-        for (const chord of chords) {
-            const chordHalfSteps = chord.getParsedHalfSteps();
+        for (const chordType of chordTypes) {
+            const chordHalfSteps = chordType.getParsedHalfSteps();
             if (isChordMatch(normalizedRelativeNotes, chordHalfSteps)) {
                 matchedChords.push({
-                    root: rootNote.name,
-                    chord
+                    rootNote,
+                    chordType
                 });
             }
         }
@@ -85,8 +83,8 @@ function getMatchedChords(selectedNoteNumbers: number[], matchedChords: MatchedC
  * @param selectedNoteNumbers - An array of absolute MIDI note numbers
  * @returns An array of matched chords
  */
-export function getChordsFromSelectedNotes(selectedNoteNumbers: number[]): MatchedChord[] {
-    let matchedChords: MatchedChord[] = [];
+export function getChordsFromSelectedNotes(selectedNoteNumbers: number[]): Chord[] {
+    let matchedChords: Chord[] = [];
 
     if (selectedNoteNumbers.length === 0) {
         return matchedChords;

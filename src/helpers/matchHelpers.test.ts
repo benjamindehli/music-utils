@@ -10,8 +10,8 @@ describe("getChordsFromSelectedNotes", () => {
         const midiNotes = [60, 64, 67];
         const result = getChordsFromSelectedNotes(midiNotes);
         expect(result[0]).toMatchObject({
-            root: "C",
-            chord: {
+            rootNote: { name: "C", number: 0 },
+            chordType: {
                 name: "major",
                 halfSteps: [0, 4, 7]
             }
@@ -23,8 +23,8 @@ describe("getChordsFromSelectedNotes", () => {
         const midiNotes = [64, 67, 71];
         const result = getChordsFromSelectedNotes(midiNotes);
         expect(result[0]).toMatchObject({
-            root: "E",
-            chord: {
+            rootNote: { name: "E", number: 4 },
+            chordType: {
                 name: "minor",
                 halfSteps: [0, 3, 7]
             }
@@ -35,7 +35,8 @@ describe("getChordsFromSelectedNotes", () => {
         // C major in first inversion: E (64), G (67), C (72)
         const midiNotes = [64, 67, 72];
         const result = getChordsFromSelectedNotes(midiNotes);
-        expect(result[0].root).toBe("E");
+        expect(result[0].rootNote?.name).toBe("E");
+        expect(result[0].rootNote?.number).toBe(4);
     });
 
     it("handles repeated notes", () => {
@@ -43,8 +44,8 @@ describe("getChordsFromSelectedNotes", () => {
         const midiNotes = [60, 64, 67, 72];
         const result = getChordsFromSelectedNotes(midiNotes);
         expect(result[0]).toMatchObject({
-            root: "C",
-            chord: {
+            rootNote: { name: "C", number: 0 },
+            chordType: {
                 name: "major",
                 halfSteps: [0, 4, 7]
             }
