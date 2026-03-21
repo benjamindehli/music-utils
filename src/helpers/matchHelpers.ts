@@ -67,10 +67,12 @@ function getMatchedChords(selectedNoteNumbers: number[], matchedChords: Chord[])
         for (const chordType of chordTypes) {
             const chordHalfSteps = chordType.getParsedHalfSteps();
             if (isChordMatch(normalizedRelativeNotes, chordHalfSteps)) {
-                matchedChords.push({
-                    rootNote,
-                    chordType
-                });
+                matchedChords.push(
+                    new Chord({
+                        rootNote,
+                        chordType
+                    })
+                );
             }
         }
     }
