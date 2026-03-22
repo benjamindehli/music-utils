@@ -1,15 +1,15 @@
 /**
- * Converts an absolute MIDI note number to a relative number based on a key.
- * For example, if the key is C (60), then C (60) would be 0, C# (61) would be 1, D (62) would be 2, etc.
- * If the note number is less than the key note number, it wraps around to the next octave.
- * For example, if the key is C (60), then B (59) would be 11.
+ * Converts an absolute MIDI note number to a relative number based on a root note.
+ * For example, if the root note is C (60), then C (60) would be 0, C# (61) would be 1, D (62) would be 2, etc.
+ * If the note number is less than the root note number, it wraps around to the next octave.
+ * For example, if the root note is C (60), then B (59) would be 11.
  *
  * @param noteNumber - The absolute MIDI note number
- * @param keyNoteNumber - The MIDI note number of the key
+ * @param rootNoteNumber - The MIDI note number of the root note
  * @returns The relative note number within the octave
  */
-export function getRelativeNoteNumber(noteNumber: number, keyNoteNumber: number): number {
-    let relativeNumber = noteNumber - keyNoteNumber;
+export function getRelativeNoteNumber(noteNumber: number, rootNoteNumber: number): number {
+    let relativeNumber = noteNumber - rootNoteNumber;
     if (relativeNumber < 0) {
         relativeNumber += 12;
     }
