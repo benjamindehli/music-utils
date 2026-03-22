@@ -17,6 +17,18 @@ export function getRelativeNoteNumber(noteNumber: number, keyNoteNumber: number)
 }
 
 /**
+ * Converts a relative note number to an absolute MIDI note number based on a root note.
+ * For example, if the root note is C (60), then 0 would be C (60), 1 would be C# (61), 2 would be D (62), etc.
+ *
+ * @param relativeNoteNumber - The relative note number within the octave
+ * @param rootNoteNumber - The MIDI note number of the root note
+ * @returns The absolute MIDI note number
+ */
+export function getAbsoluteNoteNumber(relativeNoteNumber: number, rootNoteNumber: number): number {
+    return (rootNoteNumber + relativeNoteNumber) % 12;
+}
+
+/**
  * Normalizes a MIDI note number to a value between 0 and 11.
  * For example, C4 (60) would return 0, C#4 (61) would return 1, D4 (62) would return 2, etc.
  *
