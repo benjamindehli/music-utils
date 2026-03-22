@@ -15,5 +15,6 @@ import scaleTypes from "./data/scaleTypes";
 
 export { Chord, ChordType, Interval, Midi, NoteSelection, Scale, ScaleType, chordTypes, intervals, notes, scaleTypes };
 
+// Helpers
 export { getChordsFromSelectedNotes } from "./helpers/matchHelpers";
-export { getRelativeNoteNumber, normalizeHalfStep, normalizeHalfSteps } from "./helpers/noteHelpers";
+export { getAbsoluteNoteNumber, getRelativeNoteNumber, normalizeHalfStep, normalizeHalfSteps } from "./helpers/noteHelpers";
