@@ -6,9 +6,10 @@
         "esModuleInterop": true,
         "forceConsistentCasingInFileNames": true,
         "skipLibCheck": true,
-        "moduleResolution": "node",
         "resolveJsonModule": true,
-        "outDir": "dist"
+        "outDir": "dist",
+        "rootDir": "./src",
+        "ignoreDeprecations": "6.0" // Temporary workaround until tsup supports TypeScript 6.0
     },
     "include": ["src/**/*", "src/**/*.test.ts", "src/**/*.spec.ts", "setup-jest.ts"],
     "exclude": ["node_modules", "dist"]
