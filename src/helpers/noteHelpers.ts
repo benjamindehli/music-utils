@@ -1,3 +1,6 @@
+import Note from "../classes/Note";
+import notes from "../data/notes";
+
 /**
  * Converts an absolute MIDI note number to a relative number based on a root note.
  * For example, if the root note is C (60), then C (60) would be 0, C# (61) would be 1, D (62) would be 2, etc.
@@ -47,4 +50,15 @@ export function normalizeHalfStep(noteNumber: number): number {
  */
 export function normalizeHalfSteps(halfSteps: number[]): number[] {
     return [...new Set(halfSteps.map(normalizeHalfStep))].sort((a, b) => a - b);
+}
+
+/**
+ * Gets the Note object corresponding to a given MIDI note number by normalizing it to a value between 0 and 11 and looking it up in the notes data.
+ *
+ * @param noteNumber - The absolute MIDI note number
+ * @returns The Note object corresponding to the normalized MIDI note number, or undefined if not found
+ */
+export function getNoteFromNoteNumber(noteNumber: number): Note | undefined {
+    const normalizedNoteNumber = normalizeHalfStep(noteNumber);
+    return notes.find((note: Note) => note.number === normalizedNoteNumber);
 }
