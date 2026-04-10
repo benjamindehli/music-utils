@@ -8,6 +8,7 @@ const chordTypes: ChordType[] = [
     new ChordType({ halfSteps: [0, 2, 4], name: "add2(no5)" }),
     new ChordType({ halfSteps: [0, 2, 4, 7], name: "add2" }),
     new ChordType({ halfSteps: [0, 2, 5, 7], name: "sus2add4" }),
+    new ChordType({ halfSteps: [0, 2, 6], name: "sus2(b5)" }),
     new ChordType({ halfSteps: [0, 2, 7], name: "sus2" }),
     new ChordType({ halfSteps: [0, 2, 7, 10], name: "7sus2" }),
     new ChordType({ halfSteps: [0, 2, 7, 11], name: "maj7sus2" }),
