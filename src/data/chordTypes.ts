@@ -31,7 +31,7 @@ const chordTypes: ChordType[] = [
     new ChordType({ halfSteps: [0, 3, 7, 10, 13, 15], name: "m7(b9)(#9)" }),
     new ChordType({ halfSteps: [0, 3, 7, 10, 14], name: "m9" }),
     new ChordType({ halfSteps: [0, 3, 7, 10, 14, 17], name: "m11" }),
-    new ChordType({ halfSteps: [0, 3, 7, 10, 14, 18], name: "9(#11)" }),
+    new ChordType({ halfSteps: [0, 3, 7, 10, 14, 18], name: "m9(#11)" }),
     new ChordType({ halfSteps: [0, 3, 7, 10, 14, 21], name: "m13" }),
     new ChordType({ halfSteps: [0, 3, 7, 10, 15], name: "m7(#9)" }),
     new ChordType({ halfSteps: [0, 3, 7, 10, 17], name: "m7(add11)" }),
