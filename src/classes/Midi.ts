@@ -1,5 +1,21 @@
 export type MidiMessageHandler = () => void;
 
+interface WebMidiInput {
+    onmidimessage: MidiMessageHandler | null;
+}
+
+interface WebMidiInputMap {
+    values(): IterableIterator<WebMidiInput>;
+}
+
+interface WebMidiAccess {
+    readonly inputs: WebMidiInputMap;
+}
+
+interface WebMidiNavigator {
+    requestMIDIAccess(): Promise<WebMidiAccess>;
+}
+
 /**
  * Class representing MIDI access and handling MIDI messages.
  */
@@ -14,10 +30,11 @@ export default class Midi {
             return;
         }
 
-        if ((navigator as any).requestMIDIAccess) {
+        const nav = navigator as unknown as WebMidiNavigator;
+        if (nav.requestMIDIAccess) {
             (async () => {
                 try {
-                    const midiAccess = await (navigator as any).requestMIDIAccess();
+                    const midiAccess = await nav.requestMIDIAccess();
                     this.onMidiSuccess(midiAccess, midiMessageHandler);
                 } catch (error) {
                     console.error("Error accessing MIDI devices:", error);
@@ -33,9 +50,8 @@ export default class Midi {
      * @param midiAccess - The MIDI access object obtained from the Web MIDI API.
      * @param midiMessageHandler - A callback function that will be called whenever a MIDI message is received.
      */
-    onMidiSuccess(midiAccess: any, midiMessageHandler: MidiMessageHandler): void {
-        const inputs = midiAccess.inputs.values();
-        for (let input of inputs) {
+    onMidiSuccess(midiAccess: WebMidiAccess, midiMessageHandler: MidiMessageHandler): void {
+        for (const input of midiAccess.inputs.values()) {
             input.onmidimessage = midiMessageHandler;
         }
     }
