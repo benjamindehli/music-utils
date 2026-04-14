@@ -21,12 +21,7 @@ function isChordMatch(normalizedRelativeNotes: number[], chordHalfSteps: number[
     if (normalizedRelativeNotes.length !== chordHalfSteps.length) {
         return false;
     }
-    for (let i = 0; i < chordHalfSteps.length; i++) {
-        if (normalizedRelativeNotes[i] !== chordHalfSteps[i]) {
-            return false;
-        }
-    }
-    return true;
+    return chordHalfSteps.every((step, i) => normalizedRelativeNotes[i] === step);
 }
 
 /**
@@ -57,18 +52,16 @@ function getMatchedChordsForRootNote(selectedNoteNumbers: number[], rootNoteNumb
 }
 
 /**
- * Gets the chords that match the selected MIDI note numbers for all root notes except the specified one, and optionally includes a bass note.
+ * Gets the chords that match the selected MIDI note numbers for a specific root note, including inversions.
  *
  * @param selectedNoteNumbers - An array of absolute MIDI note numbers
- * @param rootNoteToExclude - The root note to exclude from the matching process
- * @param bassNoteToInclude - An optional bass note to include in the matched chords
- * @returns An array of matched chords for all root notes except the specified one, with an optional bass note included
+ * @param rootNoteNumber - The MIDI note number of the root note to check against
+ * @returns An array of matched chords for the specified root note, including inversions
  */
 export function getMatchedInversionsForRootNote(selectedNoteNumbers: number[], rootNoteNumber: number): Chord[] {
     const matchedChords: Chord[] = [];
     const relativeSelectedNoteNumbers = selectedNoteNumbers.map((noteNumber) => getRelativeNoteNumber(noteNumber, rootNoteNumber));
     const normalizedRelativeNoteNumbers = normalizeHalfSteps(relativeSelectedNoteNumbers);
-    normalizedRelativeNoteNumbers.sort((a, b) => a - b);
     const rootNote = getNoteFromNoteNumber(rootNoteNumber);
     for (const chordType of chordTypes) {
         const chordHalfSteps = chordType?.getParsedHalfSteps();
@@ -100,7 +93,6 @@ export function getMatchedInversionsForAllRootNotes(selectedNoteNumbers: number[
         }
         const relativeSelectedNoteNumbers = selectedNoteNumbers.map((noteNumber) => getRelativeNoteNumber(noteNumber, rootNote.number));
         const normalizedRelativeNoteNumbers = normalizeHalfSteps(relativeSelectedNoteNumbers);
-        normalizedRelativeNoteNumbers.sort((a, b) => a - b);
         for (const chordType of chordTypes) {
             const chordHalfSteps = chordType?.getParsedHalfSteps();
             if (isChordMatch(normalizedRelativeNoteNumbers, chordHalfSteps)) {
@@ -118,16 +110,6 @@ export function getMatchedInversionsForAllRootNotes(selectedNoteNumbers: number[
 }
 
 /**
- * Gets the MIDI note number of the lowest note in the selected notes, which is considered the bass note.
- *
- * @param selectedNoteNumbers - An array of absolute MIDI note numbers
- * @returns The MIDI note number of the lowest note, which is the bass note
- */
-function getBassNoteNumber(selectedNoteNumbers: number[]): number {
-    return Math.min(...selectedNoteNumbers);
-}
-
-/**
  * Gets the MIDI note number of the highest bass note in the selected notes.
  *
  * @param selectedNoteNumbers - An array of absolute MIDI note numbers
@@ -135,7 +117,7 @@ function getBassNoteNumber(selectedNoteNumbers: number[]): number {
  */
 export function getHighestBassNoteNumber(selectedNoteNumbers: number[]): number {
     // This should be the same note as the lowest note number, but may be in a different octave. It's the highest if the lowest note is repeated multiple times in octaves, without other notes in between. For example if the selected notes are [52, 64, 69, 70, 73, 76]; the lowest note number is 52, but the highest bass note number is 64, because 52 is repeated in octaves at 64 and 76. But only because there are no other notes between 52 and 64. If the selected notes were [52, 60, 64, 69, 70, 73, 76], then the highest bass note number would be 52, because there is a different note (60) between the repeated 52s.
-    const lowestNoteNumber = getBassNoteNumber(selectedNoteNumbers);
+    const lowestNoteNumber = Math.min(...selectedNoteNumbers);
     const sortedNotes = [...selectedNoteNumbers].sort((a, b) => a - b);
     let highestBassNoteNumber = lowestNoteNumber;
     for (const noteNumber of sortedNotes) {
