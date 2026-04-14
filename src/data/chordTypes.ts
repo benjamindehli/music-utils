@@ -2,7 +2,6 @@
 import ChordType from "../classes/ChordType";
 
 const chordTypes: ChordType[] = [
-    new ChordType({ halfSteps: [0], name: "" }),
     new ChordType({ halfSteps: [0, 1, 4, 5, 8, 9], name: "Ode-to-Napoleon hexachord" }),
     new ChordType({ halfSteps: [0, 1, 4, 6, 7, 10], name: "Petrushka chord" }),
     new ChordType({ halfSteps: [0, 1, 5, 6, 10, 12, 15, 17], name: "Magic chord" }),
