@@ -44,7 +44,7 @@ describe("getChordsFromSelectedNotes", () => {
     });
 
     it("returns slashChord matchType when lowest note is omitted and includes correct bassNote", () => {
-        const midiNotes = [64, 67]; // E, G (C major without root)
+        const midiNotes = [64, 67, 72]; // E, G, C (C major, but E is the lowest note)
         const result = getChordsFromSelectedNotes(midiNotes);
         const match = result.find((r) => r.matchType === "slashChord");
         expect(match).toBeTruthy();
