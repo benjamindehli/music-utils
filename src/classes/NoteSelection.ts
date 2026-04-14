@@ -7,8 +7,8 @@ export interface NoteSelectionProps {
 }
 
 export interface SelectionType {
+    label: string;
     value: string;
-    [key: string]: any;
 }
 
 /**
