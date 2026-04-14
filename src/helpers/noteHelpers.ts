@@ -20,12 +20,12 @@ export function getRelativeNoteNumber(noteNumber: number, rootNoteNumber: number
 }
 
 /**
- * Converts a relative note number to an absolute MIDI note number based on a root note.
- * For example, if the root note is C (60), then 0 would be C (60), 1 would be C# (61), 2 would be D (62), etc.
+ * Converts a relative note number to a pitch class (0–11) based on a root note.
+ * For example, if the root note is C (60), then 0 would be pitch class 0 (C), 1 would be 1 (C#), 2 would be 2 (D), etc.
  *
  * @param relativeNoteNumber - The relative note number within the octave
  * @param rootNoteNumber - The MIDI note number of the root note
- * @returns The absolute MIDI note number
+ * @returns The pitch class (0–11) of the note that is relativeNoteNumber semitones above the root
  */
 export function getAbsoluteNoteNumber(relativeNoteNumber: number, rootNoteNumber: number): number {
     return (rootNoteNumber + relativeNoteNumber) % 12;
