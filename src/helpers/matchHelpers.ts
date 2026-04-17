@@ -110,6 +110,16 @@ export function getMatchedInversionsForAllRootNotes(selectedNoteNumbers: number[
 }
 
 /**
+ * Gets the lowest MIDI note number from an array of note numbers.
+ *
+ * @param noteNumbers - An array of absolute MIDI note numbers
+ * @returns The lowest MIDI note number
+ */
+export function getLowestNoteNumber(noteNumbers: number[]): number {
+    return Math.min(...noteNumbers);
+}
+
+/**
  * Gets the MIDI note number of the highest bass note in the selected notes.
  *
  * @param selectedNoteNumbers - An array of absolute MIDI note numbers
@@ -117,7 +127,7 @@ export function getMatchedInversionsForAllRootNotes(selectedNoteNumbers: number[
  */
 export function getHighestBassNoteNumber(selectedNoteNumbers: number[]): number {
     // This should be the same note as the lowest note number, but may be in a different octave. It's the highest if the lowest note is repeated multiple times in octaves, without other notes in between. For example if the selected notes are [52, 64, 69, 70, 73, 76]; the lowest note number is 52, but the highest bass note number is 64, because 52 is repeated in octaves at 64 and 76. But only because there are no other notes between 52 and 64. If the selected notes were [52, 60, 64, 69, 70, 73, 76], then the highest bass note number would be 52, because there is a different note (60) between the repeated 52s.
-    const lowestNoteNumber = Math.min(...selectedNoteNumbers);
+    const lowestNoteNumber = getLowestNoteNumber(selectedNoteNumbers);
     const sortedNotes = [...selectedNoteNumbers].sort((a, b) => a - b);
     let highestBassNoteNumber = lowestNoteNumber;
     for (const noteNumber of sortedNotes) {
