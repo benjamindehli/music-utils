@@ -1,10 +1,14 @@
 import {
     getChordsFromSelectedNotes,
     getHighestBassNoteNumber,
+    getLowestNoteNumber,
     getMatchedInversionsForAllRootNotes,
     getMatchedInversionsForRootNote,
+    getMatchedScalesForAllRootNotes,
+    getScalesFromSelectedNotes,
     removeNotesNumbersInDifferentOctavesThanSelectedNoteNumber
 } from "./matchHelpers";
+import { getNoteFromNoteNumber } from "./noteHelpers";
 
 describe("getChordsFromSelectedNotes", () => {
     it("returns empty array for empty input", () => {
@@ -101,5 +105,90 @@ describe("getMatchedInversionsForAllRootNotes", () => {
         const result = getMatchedInversionsForAllRootNotes(midiNotes);
         expect(result.some((r) => r.chordType?.name === "major")).toBe(true);
         expect(result[0]?.bassNote).toBeUndefined();
+    });
+});
+
+describe("getLowestNoteNumber", () => {
+    it("returns the lowest note number from an array", () => {
+        const midiNotes = [64, 67, 72, 60, 76];
+        const result = getLowestNoteNumber(midiNotes);
+        expect(result).toBe(60);
+    });
+
+    it("returns the single note when array has one element", () => {
+        const midiNotes = [64];
+        const result = getLowestNoteNumber(midiNotes);
+        expect(result).toBe(64);
+    });
+
+    it("handles negative note numbers", () => {
+        const midiNotes = [-5, 10, 3, 0];
+        const result = getLowestNoteNumber(midiNotes);
+        expect(result).toBe(-5);
+    });
+});
+
+describe("getMatchedScalesForAllRootNotes", () => {
+    it("finds scale matches for given notes", () => {
+        const midiNotes = [60, 62, 64, 65, 67, 69, 71]; // C major scale
+        const result = getMatchedScalesForAllRootNotes(midiNotes);
+        expect(result.length).toBeGreaterThan(0);
+        expect(result.some((match) => match.scale?.rootNote?.name === "C" && match.scale?.scaleType?.name === "major scale")).toBe(true);
+    });
+
+    it("identifies exactRoot match type when scaleRootNote is provided", () => {
+        const midiNotes = [60, 62, 64, 65, 67, 69, 71]; // C major scale
+        const cNote = getNoteFromNoteNumber(60); // C note
+        const result = getMatchedScalesForAllRootNotes(midiNotes, cNote);
+        const exactRootMatch = result.find((match) => match.matchType === "exactRoot");
+        expect(exactRootMatch).toBeTruthy();
+        expect(exactRootMatch?.scale?.rootNote?.name).toBe("C");
+    });
+
+    it("identifies nonRoot match type for non-root matches", () => {
+        const midiNotes = [60, 62, 64, 65, 67, 69, 71]; // C major scale
+        const dNote = getNoteFromNoteNumber(62); // D note (not the root)
+        const result = getMatchedScalesForAllRootNotes(midiNotes, dNote);
+        const nonRootMatch = result.find((match) => match.matchType === "nonRoot");
+        expect(nonRootMatch).toBeTruthy();
+    });
+
+    it("returns empty array for empty input", () => {
+        const result = getMatchedScalesForAllRootNotes([]);
+        expect(result).toEqual([]);
+    });
+});
+
+describe("getScalesFromSelectedNotes", () => {
+    it("returns empty array for empty input", () => {
+        const result = getScalesFromSelectedNotes([]);
+        expect(result).toEqual([]);
+    });
+
+    it("finds scale matches using lowest note as root", () => {
+        const midiNotes = [60, 62, 64, 65, 67, 69, 71]; // C major scale
+        const result = getScalesFromSelectedNotes(midiNotes);
+        expect(result.length).toBeGreaterThan(0);
+        expect(result.some((match) => match.scale?.scaleType?.name === "major scale")).toBe(true);
+    });
+
+    it("uses the lowest note number as the root note reference", () => {
+        const midiNotes = [67, 60, 64, 65, 69, 71, 62]; // C major scale (unsorted)
+        const result = getScalesFromSelectedNotes(midiNotes);
+        const exactRootMatch = result.find((match) => match.matchType === "exactRoot");
+        expect(exactRootMatch?.scale?.rootNote?.name).toBe("C"); // 60 is C and the lowest
+    });
+
+    it("finds minor scale matches", () => {
+        const midiNotes = [60, 62, 63, 65, 67, 68, 70]; // C natural minor scale
+        const result = getScalesFromSelectedNotes(midiNotes);
+        expect(result.some((match) => match.scale?.scaleType?.name === "natural minor scale")).toBe(true);
+    });
+
+    it("handles single note input", () => {
+        const midiNotes = [60];
+        const result = getScalesFromSelectedNotes(midiNotes);
+        // Single note won't match complete scales in this implementation
+        expect(result.length).toBe(0);
     });
 });
