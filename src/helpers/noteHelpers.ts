@@ -12,9 +12,9 @@ import notes from "../data/notes";
  * @returns The relative note number within the octave
  */
 export function getRelativeNoteNumber(noteNumber: number, rootNoteNumber: number): number {
-    let relativeNumber = noteNumber - rootNoteNumber;
+    const relativeNumber = noteNumber - rootNoteNumber;
     if (relativeNumber < 0) {
-        relativeNumber += 12;
+        return ((relativeNumber % 12) + 12) % 12;
     }
     return relativeNumber;
 }
@@ -39,7 +39,7 @@ export function getAbsoluteNoteNumber(relativeNoteNumber: number, rootNoteNumber
  * @returns The normalized note number within the octave
  */
 export function normalizeHalfStep(noteNumber: number): number {
-    return noteNumber % 12;
+    return ((noteNumber % 12) + 12) % 12;
 }
 
 /**
