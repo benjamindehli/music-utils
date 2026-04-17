@@ -236,6 +236,7 @@ export function getMatchedScalesForAllRootNotes(selectedNoteNumbers: number[], s
 }
 
 /**
+ * Gets the scales that match the selected MIDI note numbers, using the lowest note as the root reference.
  *
  * @param selectedNoteNumbers - An array of absolute MIDI note numbers
  * @returns An array of ScaleMatch objects representing the matched scales and their match types
