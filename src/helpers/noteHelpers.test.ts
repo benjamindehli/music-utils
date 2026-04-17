@@ -10,6 +10,10 @@ describe("noteHelpers", () => {
             expect(getRelativeNoteNumber(59, 60)).toBe(11);
             expect(getRelativeNoteNumber(60, 61)).toBe(11);
         });
+        it("returns correct relative note number when noteNumber is more than one octave below keyNoteNumber", () => {
+            expect(getRelativeNoteNumber(47, 60)).toBe(11); // Bb two octaves below C
+            expect(getRelativeNoteNumber(48, 60)).toBe(0); // C two octaves below C
+        });
     });
 
     describe("getAbsoluteNoteNumber", () => {
@@ -28,6 +32,11 @@ describe("noteHelpers", () => {
             expect(normalizeHalfStep(61)).toBe(1);
             expect(normalizeHalfStep(71)).toBe(11);
             expect(normalizeHalfStep(72)).toBe(0);
+        });
+        it("returns a positive pitch class for negative inputs", () => {
+            expect(normalizeHalfStep(-1)).toBe(11);
+            expect(normalizeHalfStep(-12)).toBe(0);
+            expect(normalizeHalfStep(-13)).toBe(11);
         });
     });
 
