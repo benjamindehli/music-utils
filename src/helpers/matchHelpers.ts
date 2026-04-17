@@ -2,6 +2,8 @@
 import Chord from "../classes/Chord";
 import ChordMatch from "../classes/ChordMatch";
 import Note from "../classes/Note";
+import Scale from "../classes/Scale";
+import ScaleMatch from "../classes/ScaleMatch";
 
 // Helpers
 import { getNoteFromNoteNumber, getRelativeNoteNumber, normalizeHalfSteps } from "./noteHelpers";
@@ -9,6 +11,7 @@ import { getNoteFromNoteNumber, getRelativeNoteNumber, normalizeHalfSteps } from
 // Data
 import chordTypes from "../data/chordTypes";
 import notes from "../data/notes";
+import scaleTypes from "../data/scaleTypes";
 
 /**
  * Checks if the normalized relative notes match the chord half steps.
@@ -199,4 +202,50 @@ export function getChordsFromSelectedNotes(selectedNoteNumbers: number[]): Chord
     matchedChordsWithoutLowestNote.forEach((chord) => matchedChords.push(new ChordMatch({ chord, matchType: "slashChord" })));
 
     return matchedChords;
+}
+
+/**
+ * Gets the scales that match the selected MIDI note numbers, including exact root matches and non-root matches.
+ *
+ * @param selectedNoteNumbers - An array of absolute MIDI note numbers
+ * @param scaleRootNote - The root note of the scale to match against
+ * @returns An array of ScaleMatch objects representing the matched scales and their match types
+ */
+export function getMatchedScalesForAllRootNotes(selectedNoteNumbers: number[], scaleRootNote?: Note): ScaleMatch[] {
+    const matchedScales: ScaleMatch[] = [];
+    for (const rootNote of notes) {
+        const relativeSelectedNoteNumbers = selectedNoteNumbers.map((noteNumber) => getRelativeNoteNumber(noteNumber, rootNote.number));
+        const normalizedRelativeNoteNumbers = normalizeHalfSteps(relativeSelectedNoteNumbers);
+        for (const scaleType of scaleTypes) {
+            const scaleHalfSteps = scaleType?.getParsedHalfSteps();
+            const isExactRoot = scaleRootNote && rootNote?.number === scaleRootNote?.number % 12;
+            if (isChordMatch(normalizedRelativeNoteNumbers, scaleHalfSteps)) {
+                matchedScales.push(
+                    new ScaleMatch({
+                        matchType: isExactRoot ? "exactRoot" : "nonRoot",
+                        scale: new Scale({
+                            rootNote,
+                            scaleType
+                        })
+                    })
+                );
+            }
+        }
+    }
+    return matchedScales;
+}
+
+/**
+ *
+ * @param selectedNoteNumbers - An array of absolute MIDI note numbers
+ * @returns An array of ScaleMatch objects representing the matched scales and their match types
+ */
+export function getScalesFromSelectedNotes(selectedNoteNumbers: number[]): ScaleMatch[] {
+    if (selectedNoteNumbers.length === 0) {
+        return [];
+    }
+    const lowestNoteNumber = getLowestNoteNumber(selectedNoteNumbers);
+    const rootNote = getNoteFromNoteNumber(lowestNoteNumber);
+    const matchedScales = getMatchedScalesForAllRootNotes(selectedNoteNumbers, rootNote);
+    return matchedScales;
 }
