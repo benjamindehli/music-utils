@@ -1,5 +1,6 @@
 import {
     getChordsFromSelectedNotes,
+    getChordsInScale,
     getHighestBassNoteNumber,
     getLowestNoteNumber,
     getMatchedInversionsForAllRootNotes,
@@ -8,7 +9,10 @@ import {
     getScalesFromSelectedNotes,
     removeNotesNumbersInDifferentOctavesThanSelectedNoteNumber
 } from "./matchHelpers";
+import Scale from "../classes/Scale";
 import { getNoteFromNoteNumber } from "./noteHelpers";
+import notes from "../data/notes";
+import scaleTypes from "../data/scaleTypes";
 
 describe("getChordsFromSelectedNotes", () => {
     it("returns empty array for empty input", () => {
@@ -156,6 +160,67 @@ describe("getMatchedScalesForAllRootNotes", () => {
     it("returns empty array for empty input", () => {
         const result = getMatchedScalesForAllRootNotes([]);
         expect(result).toEqual([]);
+    });
+});
+
+describe("getChordsInScale", () => {
+    const majorScaleType = scaleTypes.find((st) => st.name === "major scale")!;
+    const noteC = notes.find((n) => n.name === "C")!;
+    const noteA = notes.find((n) => n.name === "A")!;
+    const cMajorScale = new Scale({ scaleType: majorScaleType, rootNote: noteC });
+    const aMinorScaleType = scaleTypes.find((st) => st.name === "natural minor scale")!;
+    const aMinorScale = new Scale({ scaleType: aMinorScaleType, rootNote: noteA });
+
+    it("returns empty array for a scale with no root note", () => {
+        const result = getChordsInScale({} as Scale);
+        expect(result).toEqual([]);
+    });
+
+    it("finds C major chord in C major scale", () => {
+        const result = getChordsInScale(cMajorScale);
+        expect(result.some((c) => c.rootNote?.name === "C" && c.chordType?.name === "major")).toBe(true);
+    });
+
+    it("finds F major chord in C major scale", () => {
+        const result = getChordsInScale(cMajorScale);
+        expect(result.some((c) => c.rootNote?.name === "F" && c.chordType?.name === "major")).toBe(true);
+    });
+
+    it("finds A minor chord in C major scale", () => {
+        const result = getChordsInScale(cMajorScale);
+        expect(result.some((c) => c.rootNote?.name === "A" && c.chordType?.name === "minor")).toBe(true);
+    });
+
+    it("finds B dim chord in C major scale", () => {
+        const result = getChordsInScale(cMajorScale);
+        expect(result.some((c) => c.rootNote?.name === "B" && c.chordType?.name === "dim")).toBe(true);
+    });
+
+    it("does not include C minor chord in C major scale", () => {
+        const result = getChordsInScale(cMajorScale);
+        expect(result.some((c) => c.rootNote?.name === "C" && c.chordType?.name === "minor")).toBe(false);
+    });
+
+    it("does not include C# major chord in C major scale", () => {
+        const result = getChordsInScale(cMajorScale);
+        expect(result.some((c) => c.rootNote?.name === "C#" && c.chordType?.name === "major")).toBe(false);
+    });
+
+    it("only returns chords rooted on notes within the scale", () => {
+        const result = getChordsInScale(cMajorScale);
+        const scalePitchClasses = new Set([0, 2, 4, 5, 7, 9, 11]);
+        const allRootsInScale = result.every((c) => c.rootNote && scalePitchClasses.has(c.rootNote.number));
+        expect(allRootsInScale).toBe(true);
+    });
+
+    it("finds A minor chord in A natural minor scale", () => {
+        const result = getChordsInScale(aMinorScale);
+        expect(result.some((c) => c.rootNote?.name === "A" && c.chordType?.name === "minor")).toBe(true);
+    });
+
+    it("finds E minor chord in A natural minor scale", () => {
+        const result = getChordsInScale(aMinorScale);
+        expect(result.some((c) => c.rootNote?.name === "E" && c.chordType?.name === "minor")).toBe(true);
     });
 });
 
