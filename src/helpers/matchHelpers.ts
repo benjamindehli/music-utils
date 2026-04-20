@@ -250,3 +250,36 @@ export function getScalesFromSelectedNotes(selectedNoteNumbers: number[]): Scale
     const matchedScales = getMatchedScalesForAllRootNotes(selectedNoteNumbers, rootNote);
     return matchedScales;
 }
+
+/**
+ * Gets all chords whose notes are entirely contained within the given scale.
+ * Each scale degree is treated as a potential chord root, and every chord type
+ * whose intervals all resolve to notes present in the scale is included.
+ *
+ * @param scale - A Scale instance with a root note and scale type
+ * @returns An array of Chord instances found within the scale
+ */
+export function getChordsInScale(scale: Scale): Chord[] {
+    if (!scale?.rootNote || !scale?.scaleType) {
+        return [];
+    }
+    const scaleHalfSteps = scale.scaleType.getParsedHalfSteps();
+    const scaleHalfStepSet = new Set(scaleHalfSteps);
+    const scaleRootNumber = scale.rootNote.number;
+    const result: Chord[] = [];
+
+    for (const scaleDegreeHalfStep of scaleHalfSteps) {
+        const chordRootNote = getNoteFromNoteNumber(scaleRootNumber + scaleDegreeHalfStep);
+        if (!chordRootNote) continue;
+
+        for (const chordType of chordTypes) {
+            const chordHalfSteps = chordType.getParsedHalfSteps();
+            const allNotesInScale = chordHalfSteps.every((interval) => scaleHalfStepSet.has((scaleDegreeHalfStep + interval) % 12));
+            if (allNotesInScale) {
+                result.push(new Chord({ rootNote: chordRootNote, chordType }));
+            }
+        }
+    }
+
+    return result;
+}
