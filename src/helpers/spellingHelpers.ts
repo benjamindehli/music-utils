@@ -88,7 +88,7 @@ function assignLetters(tonic: SpelledLetter, pitchClasses: number[]): SpelledLet
     }
 
     const result: SpelledLetter[] = [{ letterIndex: tonic.letterIndex, alt: tonic.alt }];
-    const usedLetters = new Set<number>([tonic.letterIndex]);
+    const usedLetters: Set<number> = new Set([tonic.letterIndex]);
 
     for (let i = 1; i < count; i++) {
         const pitchClass = pitchClasses[i];
