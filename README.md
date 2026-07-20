@@ -91,7 +91,12 @@ chord?.getNotes().map((n) => n.name);
 // → ["F", "Ab", "C"]   (not "F", "G#", "C")
 ```
 
-For a scale, the tonic itself is spelled with the fewest accidentals — pitch class 6 as a major scale reads `Gb` (not `F#`), and 10 reads `Bb` (not `A#`). A chord keeps the spelling of its given root and only respells the notes above it.
+This also applies to the `rootNote` of a detected `Scale` or `Chord` (and a slash chord's `bassNote`): the root is spelled with the fewest accidentals for its type, so a detected Gb major scale reports `rootNote.name === "Gb"` (not `"F#"`), while an Eb minor chord reports `"Eb"` (not `"D#"`). The `Note.number` (pitch class) is unchanged, so this never affects detection — only naming.
+
+```ts
+const scale = getScalesFromSelectedNotes([66, 68, 70, 71, 73, 75, 77])[0]?.scale; // Gb major
+scale?.rootNote?.name; // "Gb"
+```
 
 The underlying `getSpelledNotes(rootPitchClass, halfSteps, preferredRootName?)` helper is exported for direct use; `preferredRootName` (e.g. `"F#"`) pins the tonic spelling.
 

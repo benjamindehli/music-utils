@@ -58,6 +58,14 @@ describe("getChordsFromSelectedNotes", () => {
         expect(match).toBeTruthy();
         expect(match?.chord?.bassNote?.name).toBe("E");
     });
+
+    it("spells the root of an Eb minor chord as Eb, not D#", () => {
+        const midiNotes = [63, 66, 70]; // Eb, Gb, Bb
+        const result = getChordsFromSelectedNotes(midiNotes);
+        const match = result.find((r) => r.chord?.chordType?.name === "minor" && r.matchType === "exactRoot");
+        expect(match?.chord?.rootNote?.name).toBe("Eb");
+        expect(match?.chord?.rootNote?.number).toBe(3); // pitch class is unchanged
+    });
 });
 
 describe("getHighestBassNoteNumber", () => {
@@ -248,6 +256,14 @@ describe("getScalesFromSelectedNotes", () => {
         const midiNotes = [60, 62, 63, 65, 67, 68, 70]; // C natural minor scale
         const result = getScalesFromSelectedNotes(midiNotes);
         expect(result.some((match) => match.scale?.scaleType?.name === "natural minor scale")).toBe(true);
+    });
+
+    it("spells a flat-key tonic conventionally (Gb major, not F# major)", () => {
+        const midiNotes = [66, 68, 70, 71, 73, 75, 77]; // Gb Ab Bb Cb Db Eb F
+        const result = getScalesFromSelectedNotes(midiNotes);
+        const match = result.find((m) => m.scale?.scaleType?.name === "major scale" && m.matchType === "exactRoot");
+        expect(match?.scale?.rootNote?.name).toBe("Gb");
+        expect(match?.scale?.getNotes().map((n) => n.name)).toEqual(["Gb", "Ab", "Bb", "Cb", "Db", "Eb", "F"]);
     });
 
     it("handles single note input", () => {

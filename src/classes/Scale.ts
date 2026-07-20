@@ -13,16 +13,21 @@ export default class Scale {
     constructor(props: { scaleType: NoteSelectionProps; rootNote: Note }) {
         this.scaleType = new ScaleType(props.scaleType);
         this.rootNote = new Note(props.rootNote);
+        // Re-spell the tonic with correct enharmonics for this scale, so the root
+        // of pitch class 6 reads "Gb" for a major scale but "F#" for a minor one.
+        if (this.rootNote !== undefined && this.scaleType !== undefined) {
+            const [spelledRoot] = getSpelledNotes(this.rootNote.number, this.scaleType.halfSteps);
+            if (spelledRoot !== undefined) this.rootNote = spelledRoot;
+        }
     }
 
     /**
      * Returns the scale's notes with correct enharmonic spelling (using flats or
      * sharps as the key requires), e.g. an F major scale returns F G A Bb C D E.
-     * The tonic is spelled with the fewest accidentals, so pitch class 6 as a
-     * major scale reads "Gb" rather than "F#".
+     * The first note matches `rootNote`, which is spelled with the fewest accidentals.
      */
     getNotes(): Note[] {
         if (this.rootNote === undefined || this.scaleType === undefined) return [];
-        return getSpelledNotes(this.rootNote.number, this.scaleType.halfSteps);
+        return getSpelledNotes(this.rootNote.number, this.scaleType.halfSteps, this.rootNote.name);
     }
 }
