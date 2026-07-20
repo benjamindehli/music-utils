@@ -6,8 +6,7 @@ on:
 
 permissions:
     contents: read
-    packages: write
-    id-token: write
+    id-token: write # required for npm Trusted Publishing (OIDC)
 
 jobs:
     publish-npm-package:
@@ -23,6 +22,11 @@ jobs:
                   node-version: "24"
                   registry-url: https://registry.npmjs.org/
 
+            # Trusted Publishing requires npm >= 11.5.1, which is newer than the
+            # version bundled with Node 24.
+            - name: Update npm
+              run: npm install -g npm@latest
+
             # Enable Corepack and activate the Yarn version from package.json
             - name: Enable Corepack & activate Yarn 4
               run: |
@@ -37,18 +41,10 @@ jobs:
               run: yarn test
 
             - name: Build project
-              if: ${{ success() }}
               run: yarn build
 
-            - name: Configure npm auth
-              run: |
-                  echo "//registry.npmjs.org/:_authToken=${NODE_AUTH_TOKEN}" > ~/.npmrc
-                  npm whoami
-              env:
-                  NODE_AUTH_TOKEN: ${{ secrets.PUBLISH_NPM_TOKEN }}
-
+            # Authentication is handled automatically via OIDC (Trusted Publishing),
+            # so no NODE_AUTH_TOKEN / .npmrc token is needed. Provenance is generated
+            # automatically for trusted publishers.
             - name: Publish to npm
-              if: ${{ success() }}
-              run: npm publish --provenance --access public
-              env:
-                  NODE_AUTH_TOKEN: ${{ secrets.PUBLISH_NPM_TOKEN }}
+              run: npm publish --access public
