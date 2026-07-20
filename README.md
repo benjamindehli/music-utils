@@ -77,6 +77,24 @@ for (const { scale, matchType } of results) {
 
 `matchType` is either `"exactRoot"` (the lowest note is the scale root) or `"nonRoot"`.
 
+## Note spelling (sharps vs flats)
+
+A pitch class has several valid names (`A#` = `Bb`), and the correct one depends on context — in a diatonic scale each letter A–G is used once, and every note's letter is fixed by its interval above the root. `Scale.getNotes()` and `Chord.getNotes()` return notes spelled this way, so an F major scale reads `Bb`, not `A#`.
+
+```ts
+const scale = getScalesFromSelectedNotes([65, 67, 69, 70, 72, 74, 76])[0]?.scale; // F major
+scale?.getNotes().map((n) => n.name);
+// → ["F", "G", "A", "Bb", "C", "D", "E"]
+
+const chord = getChordsFromSelectedNotes([65, 68, 72])[0]?.chord; // F minor
+chord?.getNotes().map((n) => n.name);
+// → ["F", "Ab", "C"]   (not "F", "G#", "C")
+```
+
+For a scale, the tonic itself is spelled with the fewest accidentals — pitch class 6 as a major scale reads `Gb` (not `F#`), and 10 reads `Bb` (not `A#`). A chord keeps the spelling of its given root and only respells the notes above it.
+
+The underlying `getSpelledNotes(rootPitchClass, halfSteps, preferredRootName?)` helper is exported for direct use; `preferredRootName` (e.g. `"F#"`) pins the tonic spelling.
+
 ## Web MIDI integration
 
 The `Midi` class wraps the Web MIDI API and wires up your message handler to all connected devices.
@@ -113,6 +131,8 @@ midi.init((event: MIDIMessageEvent) => {
 | `normalizeHalfSteps(noteNumbers)` | Reduce an array to unique, sorted pitch classes (0–11) |
 | `getRelativeNoteNumber(noteNumber, rootNoteNumber)` | Get semitone distance from a root note |
 | `getAbsoluteNoteNumber(relativeNoteNumber, rootNoteNumber)` | Convert a relative interval back to a pitch class |
+| `getSpelledNotes(rootPitchClass, halfSteps, preferredRootName?)` | Spell a scale/chord's notes with correct sharps/flats |
+| `parseNoteName(name)` | Parse a note name (e.g. `"Bb"`) into a letter index + accidental |
 
 ### Classes
 
@@ -130,6 +150,7 @@ midi.init((event: MIDIMessageEvent) => {
 | `rootNote` | `Note` | The chord's root note |
 | `chordType` | `ChordType` | The chord quality (major, minor7, etc.) |
 | `bassNote` | `Note \| undefined` | The bass note for slash chords |
+| `getNotes()` | `() => Note[]` | The chord's notes, correctly spelled relative to the root |
 
 #### `ScaleMatch`
 
@@ -144,6 +165,7 @@ midi.init((event: MIDIMessageEvent) => {
 |---|---|---|
 | `rootNote` | `Note` | The scale's root note |
 | `scaleType` | `ScaleType` | The scale type (major scale, dorian mode, etc.) |
+| `getNotes()` | `() => Note[]` | The scale's notes, correctly spelled (sharps or flats per key) |
 
 #### `Note`
 
@@ -185,7 +207,7 @@ import { getChordsFromSelectedNotes } from "@benjamindehli/music-utils/helpers/m
 import chordTypes from "@benjamindehli/music-utils/data/chordTypes";
 ```
 
-Available paths: `classes/Chord`, `classes/ChordType`, `classes/Interval`, `classes/Midi`, `classes/Note`, `classes/NoteSelection`, `classes/Scale`, `classes/ScaleType`, `classes/SelectionType`, `data/chordTypes`, `data/intervals`, `data/notes`, `data/scaleTypes`, `data/selectionTypes`, `helpers/matchHelpers`, `helpers/noteHelpers`.
+Available paths: `classes/Chord`, `classes/ChordType`, `classes/Interval`, `classes/Midi`, `classes/Note`, `classes/NoteSelection`, `classes/Scale`, `classes/ScaleType`, `classes/SelectionType`, `data/chordTypes`, `data/intervals`, `data/notes`, `data/scaleTypes`, `data/selectionTypes`, `helpers/matchHelpers`, `helpers/noteHelpers`, `helpers/spellingHelpers`.
 
 ## Formats
 

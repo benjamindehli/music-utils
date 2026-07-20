@@ -18,7 +18,8 @@ export default defineConfig({
         "src/data/scaleTypes.ts",
         "src/data/selectionTypes.ts",
         "src/helpers/matchHelpers.ts",
-        "src/helpers/noteHelpers.ts"
+        "src/helpers/noteHelpers.ts",
+        "src/helpers/spellingHelpers.ts"
     ],
     format: ["esm", "cjs"],
     dts: true,

@@ -80,6 +80,10 @@
         "./helpers/noteHelpers": {
             "import": "./dist/helpers/noteHelpers.js",
             "require": "./dist/helpers/noteHelpers.cjs"
+        },
+        "./helpers/spellingHelpers": {
+            "import": "./dist/helpers/spellingHelpers.js",
+            "require": "./dist/helpers/spellingHelpers.cjs"
         }
     },
     "types": "./dist/index.d.ts",

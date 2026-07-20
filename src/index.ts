@@ -21,3 +21,4 @@ export { Chord, ChordMatch, ChordType, Interval, Midi, Note, NoteSelection, Scal
 // Helpers
 export { getChordsFromSelectedNotes, getChordsInScale, getScalesFromSelectedNotes } from "./helpers/matchHelpers";
 export { getAbsoluteNoteNumber, getNoteFromNoteNumber, getRelativeNoteNumber, normalizeHalfStep, normalizeHalfSteps } from "./helpers/noteHelpers";
+export { getSpelledNotes, parseNoteName } from "./helpers/spellingHelpers";
