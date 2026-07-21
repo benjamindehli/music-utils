@@ -1,5 +1,5 @@
 {
-    "version": "4.4.2",
+    "version": "4.4.3",
     "name": "@benjamindehli/music-utils",
     "description": "Detect chord names from MIDI note input",
     "keywords": [
