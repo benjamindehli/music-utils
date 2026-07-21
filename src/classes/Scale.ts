@@ -16,7 +16,7 @@ export default class Scale {
         // Re-spell the tonic with correct enharmonics for this scale, so the root
         // of pitch class 6 reads "Gb" for a major scale but "F#" for a minor one.
         if (this.rootNote !== undefined && this.scaleType !== undefined) {
-            const [spelledRoot] = getSpelledNotes(this.rootNote.number, this.scaleType.halfSteps);
+            const [spelledRoot] = getSpelledNotes(this.rootNote.number, this.scaleType.halfSteps, undefined, "scale");
             if (spelledRoot !== undefined) this.rootNote = spelledRoot;
         }
     }
@@ -28,6 +28,6 @@ export default class Scale {
      */
     getNotes(): Note[] {
         if (this.rootNote === undefined || this.scaleType === undefined) return [];
-        return getSpelledNotes(this.rootNote.number, this.scaleType.halfSteps, this.rootNote.name);
+        return getSpelledNotes(this.rootNote.number, this.scaleType.halfSteps, this.rootNote.name, "scale");
     }
 }

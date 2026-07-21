@@ -10,6 +10,9 @@ const naturalMinorScale = scaleTypes.find((st) => st.name === "natural minor sca
 const majorPentatonic = scaleTypes.find((st) => st.name === "major pentatonic scale")!.halfSteps;
 const majorChord = chordTypes.find((ct) => ct.name === "major")!.halfSteps;
 const minorChord = chordTypes.find((ct) => ct.name === "minor")!.halfSteps;
+const wholeToneScale = scaleTypes.find((st) => st.name === "whole tone scale")!.halfSteps;
+const maj7Add13Chord = chordTypes.find((ct) => ct.name === "maj7(add13)")!.halfSteps;
+const mMaj7Add13Chord = chordTypes.find((ct) => ct.name === "m(maj7)(add13)")!.halfSteps;
 
 const names = (ns: { name: string }[]) => ns.map((n) => n.name);
 
@@ -60,6 +63,34 @@ describe("getSpelledNotes", () => {
         expect(names(getSpelledNotes(0, majorChord, "C"))).toEqual(["C", "E", "G"]);
     });
 
+    it("spells an extended chord without a double-accidental root (A, not Bbb)", () => {
+        // Regression: greedy assignment used to back into "Bbb Db E Gb Ab".
+        expect(names(getSpelledNotes(9, maj7Add13Chord))).toEqual(["A", "C#", "E", "F#", "G#"]);
+    });
+
+    it("spells A m(maj7)(add13) with a sharp 7th and 13th, not flats", () => {
+        expect(names(getSpelledNotes(9, mMaj7Add13Chord))).toEqual(["A", "C", "E", "F#", "G#"]);
+    });
+
+    it("spells an augmented triad with a raised fifth (A aug is A C# E#, not A C# F)", () => {
+        const augChord = chordTypes.find((ct) => ct.name === "aug")!.halfSteps;
+        expect(names(getSpelledNotes(9, augChord))).toEqual(["A", "C#", "E#"]);
+    });
+
+    it("spells a diminished seventh with a doubly-flat seventh (C dim7 is C Eb Gb Bbb)", () => {
+        const dim7Chord = chordTypes.find((ct) => ct.name === "dim7")!.halfSteps;
+        expect(names(getSpelledNotes(0, dim7Chord))).toEqual(["C", "Eb", "Gb", "Bbb"]);
+    });
+
+    it("spells a b9 and #9 on the same letter (C7(b9)(#9) uses Db and D#, not Fbb)", () => {
+        const chord = chordTypes.find((ct) => ct.name === "7(b9)(#9)")!.halfSteps;
+        expect(names(getSpelledNotes(0, chord))).toEqual(["C", "Db", "D#", "E", "G", "Bb"]);
+    });
+
+    it("spells a whole tone scale with sharps (C D E F# G# A#)", () => {
+        expect(names(getSpelledNotes(0, wholeToneScale, undefined, "scale"))).toEqual(["C", "D", "E", "F#", "G#", "A#"]);
+    });
+
     it("returns an empty array for empty half steps", () => {
         expect(getSpelledNotes(0, [])).toEqual([]);
     });
@@ -98,5 +129,13 @@ describe("Chord.getNotes", () => {
         const rootF = notes.find((n) => n.name === "F")!;
         const chord = new Chord({ chordType, rootNote: rootF });
         expect(names(chord.getNotes())).toEqual(["F", "Ab", "C"]);
+    });
+
+    it("re-spells the root of an A maj7(add13) chord as A, not Bbb", () => {
+        const chordType = chordTypes.find((ct) => ct.name === "maj7(add13)")!;
+        const rootA = notes.find((n) => n.name === "A")!;
+        const chord = new Chord({ chordType, rootNote: rootA });
+        expect(chord.rootNote?.name).toBe("A");
+        expect(names(chord.getNotes())).toEqual(["A", "C#", "E", "F#", "G#"]);
     });
 });
